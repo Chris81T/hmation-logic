@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.2.0">
+  <bpmn:collaboration id="Collaboration_1ith0kk">
+    <bpmn:participant id="Participant_ConnectToCCU" name="An CCU registrieren" processRef="Process_ConnectToCCU" />
+    <bpmn:participant id="Participant_LeaveFromCCU" name="Von CCU abmelden" processRef="Process_LeaveFromCCU" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_ConnectToCCU" name="An CCU registrieren" isExecutable="true">
+    <bpmn:laneSet />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_1ncn7zf</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1ncn7zf" sourceRef="StartEvent_1" targetRef="Task_1xg4yfj" />
+    <bpmn:serviceTask id="Task_1xg4yfj" name="Verbindung zur CCU aufnehmen" camunda:class="de.chrthms.hmation.logic.devices.delegates.EventRegisterToCCUDelegate">
+      <bpmn:incoming>SequenceFlow_1ncn7zf</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1f8iitd</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_15yb39c">
+      <bpmn:incoming>SequenceFlow_1f8iitd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1f8iitd" sourceRef="Task_1xg4yfj" targetRef="EndEvent_15yb39c" />
+  </bpmn:process>
+  <bpmn:process id="Process_LeaveFromCCU" name="Von CCU abmelden" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1o9vg5v">
+      <bpmn:outgoing>SequenceFlow_1kcsb1w</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1kcsb1w" sourceRef="StartEvent_1o9vg5v" targetRef="Task_1hfjoh3" />
+    <bpmn:endEvent id="EndEvent_0ljytzc">
+      <bpmn:incoming>SequenceFlow_1ria4bj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1ria4bj" sourceRef="Task_1hfjoh3" targetRef="EndEvent_0ljytzc" />
+    <bpmn:serviceTask id="Task_1hfjoh3" name="Verbindung zur CCU trennen" camunda:class="de.chrthms.hmation.logic.devices.delegates.EventLeaveFromCCUDelegate">
+      <bpmn:incoming>SequenceFlow_1kcsb1w</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ria4bj</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1ith0kk">
+      <bpmndi:BPMNShape id="Participant_06pqk2a_di" bpmnElement="Participant_ConnectToCCU">
+        <dc:Bounds x="72" y="-19" width="434" height="251" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="143" y="94" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="116" y="130" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ncn7zf_di" bpmnElement="SequenceFlow_1ncn7zf">
+        <di:waypoint xsi:type="dc:Point" x="179" y="112" />
+        <di:waypoint xsi:type="dc:Point" x="246" y="112" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="167.5" y="87" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1syqoq8_di" bpmnElement="Task_1xg4yfj">
+        <dc:Bounds x="246" y="72" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_15yb39c_di" bpmnElement="EndEvent_15yb39c">
+        <dc:Bounds x="413.4731437598736" y="94" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="386.4731437598736" y="130" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1f8iitd_di" bpmnElement="SequenceFlow_1f8iitd">
+        <di:waypoint xsi:type="dc:Point" x="346" y="112" />
+        <di:waypoint xsi:type="dc:Point" x="414" y="112" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="335" y="87" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_10thatt_di" bpmnElement="Participant_LeaveFromCCU">
+        <dc:Bounds x="72" y="264" width="435" height="242" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1o9vg5v_di" bpmnElement="StartEvent_1o9vg5v">
+        <dc:Bounds x="144.32616940581545" y="366.4740834386852" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="117.32616940581545" y="402.4740834386852" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1kcsb1w_di" bpmnElement="SequenceFlow_1kcsb1w">
+        <di:waypoint xsi:type="dc:Point" x="180" y="384" />
+        <di:waypoint xsi:type="dc:Point" x="245" y="384" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="167.5" y="359" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0ljytzc_di" bpmnElement="EndEvent_0ljytzc">
+        <dc:Bounds x="412.32616940581545" y="366" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="385.32616940581545" y="402" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ria4bj_di" bpmnElement="SequenceFlow_1ria4bj">
+        <di:waypoint xsi:type="dc:Point" x="345" y="384" />
+        <di:waypoint xsi:type="dc:Point" x="412" y="384" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="333.5" y="359" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0qooe4o_di" bpmnElement="Task_1hfjoh3">
+        <dc:Bounds x="245" y="344" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

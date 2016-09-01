@@ -126,9 +126,32 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.2.Final</version>
                 <configuration>
+                    <hostname>raspberrypi</hostname>
+                    <port>9990</port>
+                    <username>wildfly</username>
+                    <password>wildfly1</password>                    
                 </configuration>
             </plugin>            
         </plugins>
     </build>
+
+    <url>http://chr-thomas.de</url>
+    
+    <developers>
+        <developer>
+            <name>Christian Thomas</name>
+            <email>christian@chr-thomas.de</email>
+            <roles>
+                <role>founder</role>
+            </roles>
+        </developer>
+    </developers>    
+    
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
 </project>
