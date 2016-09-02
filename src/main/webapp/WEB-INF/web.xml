@@ -25,7 +25,7 @@
 
     <servlet>
             <servlet-name>HMaticEventServlet</servlet-name>
-            <servlet-class>de.chrthms.hmatic4j.event.server.LogicLayerServlet</servlet-class>
+            <servlet-class>de.chrthms.hmatic4j.event.server.rpc.LogicLayerServlet</servlet-class>
             <init-param>
                     <param-name>enabledForExtensions</param-name>
                     <param-value>true</param-value>
