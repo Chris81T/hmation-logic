@@ -48,7 +48,7 @@ public class EventTestRegistryObserver implements JavaDelegate {
         
         Optional<String> registryId = HMaticAPI.getInstance()
                 .observe()
-                .start((address, channel, valueKey, value) -> {
+                .start((incomingEvent) -> {
                     
                     /**
                      * NOTE:
@@ -56,10 +56,10 @@ public class EventTestRegistryObserver implements JavaDelegate {
                      */
                     
                     LOG.info("\n\n\n\n############## functional method ivokation, while getting homematic event!");
-                    LOG.info("############## deviceAddress = {}", address);
-                    LOG.info("############## deviceChannel = {}", channel);
-                    LOG.info("############## valueKey = {}", valueKey);
-                    LOG.info("############## value = {}\n\n\n\n", value);
+                    LOG.info("############## deviceAddress = {}", incomingEvent.getDeviceAddress());
+                    LOG.info("############## deviceChannel = {}", incomingEvent.getDeviceChannel());
+                    LOG.info("############## valueKey = {}", incomingEvent.getValueKey());
+                    LOG.info("############## value = {}\n\n\n\n", incomingEvent.getValue());
                     
                     RuntimeService runtimeService = BpmPlatform.getDefaultProcessEngine().getRuntimeService();
                     
