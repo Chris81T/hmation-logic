@@ -17,9 +17,14 @@
 package de.chrthms.hmation.logic.home.delegates;
 
 import de.chrthms.hmatic4j.HMaticAPI;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import org.camunda.bpm.BpmPlatform;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.runtime.Execution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,15 +41,33 @@ public class EventTestRegistryObserver implements JavaDelegate {
 
         LOG.info("******************************************** About to register test observer..");
 
+        /**
+         * is relevant for invocation by the homematic event
+         */
+        final String processInstanceId = execution.getProcessInstanceId();
+        
         Optional<String> registryId = HMaticAPI.getInstance()
                 .observe()
                 .start((address, channel, valueKey, value) -> {
+                    
+                    /**
+                     * NOTE:
+                     * Using the DelegateExecution is here impossible! The execution is already finished!
+                     */
                     
                     LOG.info("\n\n\n\n############## functional method ivokation, while getting homematic event!");
                     LOG.info("############## deviceAddress = {}", address);
                     LOG.info("############## deviceChannel = {}", channel);
                     LOG.info("############## valueKey = {}", valueKey);
                     LOG.info("############## value = {}\n\n\n\n", value);
+                    
+                    RuntimeService runtimeService = BpmPlatform.getDefaultProcessEngine().getRuntimeService();
+                    
+                    List<Execution> executions = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).list();
+                    LOG.info("createExecutionQuery --> size = {}", executions.size());
+                    executions.forEach(exec -> LOG.info("EXECUTION WITH ID = {}", exec.getId()));
+                    
+                    runtimeService.setVariable(processInstanceId, "lastReveivedEventFromCCU", new Date());
                     
                 });
         
