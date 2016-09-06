@@ -17,6 +17,7 @@
 package de.chrthms.hmation.logic.home.delegates;
 
 import de.chrthms.hmatic4j.HMaticAPI;
+import de.chrthms.hmatic4j.core.commands.impl.set.value.SetValueLevel;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,9 +37,24 @@ public class EventTestRegistryObserver implements JavaDelegate {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventTestRegistryObserver.class);
     
+    
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
+        LOG.info("******************************************** Trigger left one to move up");
+        
+        final String LEFT_ONE = "NEQ0048901";
+        final String RIGHT_ONE = "NEQ0048896";
+        
+        HMaticAPI.getInstance()
+                .rpcServerAddress("raspberrypi")
+                .wireless()
+                .command(new SetValueLevel()
+                    .value(0.8)
+                    .deviceAddress(LEFT_ONE)
+                    .deviceChannel("1"))
+                .execute();
+        
         LOG.info("******************************************** About to register test observer..");
 
         /**

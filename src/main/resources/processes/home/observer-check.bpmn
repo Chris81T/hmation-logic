@@ -13,6 +13,9 @@
       <bpmn:outgoing>SequenceFlow_1f8iitd</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_17ur38c" name="Beim Event wird eine Nachricht hierhin geschickt">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="de.chrthms.hmation.logic.home.listeners.MessageEventListener" event="start" />
+      </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1f8iitd</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_17vd2ew</bpmn:outgoing>
       <bpmn:messageEventDefinition messageRef="Message_0mkqr9w" />
