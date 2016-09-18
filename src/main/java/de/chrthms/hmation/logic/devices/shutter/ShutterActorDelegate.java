@@ -32,9 +32,9 @@ import org.camunda.bpm.BpmPlatform;
  *
  * @author christian
  */
-public class ShutterActorController implements JavaDelegate {
+public class ShutterActorDelegate implements JavaDelegate {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ShutterActorController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ShutterActorDelegate.class);
     
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -78,7 +78,7 @@ public class ShutterActorController implements JavaDelegate {
         LOG.info("Hold given eventRegistryId = {} as process variable.", eventRegistryId);
         execution.setVariable(VAR_HM_EVENT_REGISTRY_ID, eventRegistryId.orElse(null));
         
-        LOG.info("Now it is time to perform the execution to controll the shutter-actor.");
+        LOG.info("Now it is time to perform the execution to control the shutter-actor.");
         
         HMaticAPI.getInstance()
                 .rpcServerAddress(hmRpcAddress)

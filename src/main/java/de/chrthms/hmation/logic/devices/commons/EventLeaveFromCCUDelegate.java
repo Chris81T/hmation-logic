@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.chrthms.hmation.logic.devices.delegates;
+package de.chrthms.hmation.logic.devices.commons;
 
 import de.chrthms.hmatic4j.HMaticAPI;
 import de.chrthms.hmatic4j.core.commands.impl.init.LogicLayerLeave;
