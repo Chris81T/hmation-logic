@@ -4,17 +4,7 @@
     <bpmn:participant id="Participant_RollladenSteuern" name="Rollladen steuern" processRef="Process_RollladenSteuern" />
   </bpmn:collaboration>
   <bpmn:process id="Process_RollladenSteuern" name="Rollladen steuern" isExecutable="true">
-    <bpmn:endEvent id="EndEvent_11dfcko" name="Das Ansprechen des Aktors ist gescheitert">
-      <bpmn:incoming>SequenceFlow_0uwlw7u</bpmn:incoming>
-      <bpmn:errorEventDefinition errorRef="Error_04atzv8" />
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1gljqu8" sourceRef="Task_17wa6yu" targetRef="Task_0hpx0y7" />
-    <bpmn:sequenceFlow id="SequenceFlow_08u4t4o" sourceRef="ExclusiveGateway_1xalzag" targetRef="EndEvent_1ovshds">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_0w6pchb" sourceRef="ExclusiveGateway_1xalzag" targetRef="EndEvent_0g0tu5s">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${false}</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1a4mmjh" sourceRef="StartEvent_1" targetRef="Task_17wa6yu" />
     <bpmn:sequenceFlow id="SequenceFlow_1r8qh7i" sourceRef="BoundaryEvent_056ufde" targetRef="ExclusiveGateway_0x56it9" />
     <bpmn:startEvent id="StartEvent_1">
@@ -28,16 +18,7 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>SequenceFlow_1a4mmjh</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1o2g4ui" sourceRef="Task_0hpx0y7" targetRef="ExclusiveGateway_1xalzag" />
-    <bpmn:sequenceFlow id="SequenceFlow_06b7drd" sourceRef="BoundaryEvent_0apkb7e" targetRef="ExclusiveGateway_0x56it9" />
-    <bpmn:exclusiveGateway id="ExclusiveGateway_1xalzag">
-      <bpmn:incoming>SequenceFlow_1o2g4ui</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_08u4t4o</bpmn:outgoing>
-      <bpmn:outgoing>SequenceFlow_0w6pchb</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="EndEvent_1ovshds" name="Rollladen erfolgreich gesteuert">
-      <bpmn:incoming>SequenceFlow_08u4t4o</bpmn:incoming>
-    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1o2g4ui" sourceRef="Task_0hpx0y7" targetRef="Task_0xowppa" />
     <bpmn:serviceTask id="Task_17wa6yu" name="Rollladenaktor ansprechen" camunda:asyncAfter="true" camunda:class="de.chrthms.hmation.logic.devices.shutter.ShutterActorDelegate">
       <bpmn:incoming>SequenceFlow_1a4mmjh</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1gljqu8</bpmn:outgoing>
@@ -46,6 +27,44 @@
       <bpmn:outgoing>SequenceFlow_1r8qh7i</bpmn:outgoing>
       <bpmn:errorEventDefinition errorRef="Error_04atzv8" />
     </bpmn:boundaryEvent>
+    <bpmn:endEvent id="EndEvent_11dfcko" name="Das Ansprechen des Aktors ist gescheitert">
+      <bpmn:incoming>SequenceFlow_1547nfn</bpmn:incoming>
+      <bpmn:errorEventDefinition errorRef="Error_04atzv8" />
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1xalzag">
+      <bpmn:incoming>SequenceFlow_1w0x1v5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_08u4t4o</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0w6pchb</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_1ovshds" name="Rollladen erfolgreich gesteuert">
+      <bpmn:incoming>SequenceFlow_08u4t4o</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_0g0tu5s" name="Aktion wurde manuell unterbrochen">
+      <bpmn:incoming>SequenceFlow_0w6pchb</bpmn:incoming>
+      <bpmn:escalationEventDefinition escalationRef="Escalation_17keigi" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_08u4t4o" sourceRef="ExclusiveGateway_1xalzag" targetRef="EndEvent_1ovshds">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0w6pchb" sourceRef="ExclusiveGateway_1xalzag" targetRef="EndEvent_0g0tu5s">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_1w0x1v5" sourceRef="Task_0xowppa" targetRef="ExclusiveGateway_1xalzag" />
+    <bpmn:serviceTask id="Task_0xowppa" name="Ansprechen des Aktors abschließen" camunda:class="de.chrthms.hmation.logic.devices.shutter.ShutterActorMessageInterpreter">
+      <bpmn:incoming>SequenceFlow_1o2g4ui</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1w0x1v5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_1xd9qkc" name="Auf Aktor lauschen beenden" camunda:class="de.chrthms.hmation.logic.devices.shutter.LeaveObserverDelegate">
+      <bpmn:incoming>SequenceFlow_19yft2v</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1547nfn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_19yft2v" sourceRef="ExclusiveGateway_0x56it9" targetRef="ServiceTask_1xd9qkc" />
+    <bpmn:sequenceFlow id="SequenceFlow_1547nfn" sourceRef="ServiceTask_1xd9qkc" targetRef="EndEvent_11dfcko" />
+    <bpmn:exclusiveGateway id="ExclusiveGateway_0x56it9">
+      <bpmn:incoming>SequenceFlow_1r8qh7i</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_06b7drd</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_19yft2v</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
     <bpmn:receiveTask id="Task_0hpx0y7" name="Auf Antwort vom Aktor warten" messageRef="Message_1ci9q2n">
       <bpmn:extensionElements>
         <camunda:executionListener class="de.chrthms.hmation.logic.devices.shutter.HelpListener" event="start" />
@@ -57,16 +76,7 @@
       <bpmn:outgoing>SequenceFlow_06b7drd</bpmn:outgoing>
       <bpmn:errorEventDefinition errorRef="Error_04atzv8" />
     </bpmn:boundaryEvent>
-    <bpmn:exclusiveGateway id="ExclusiveGateway_0x56it9">
-      <bpmn:incoming>SequenceFlow_1r8qh7i</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_06b7drd</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0uwlw7u</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="SequenceFlow_0uwlw7u" sourceRef="ExclusiveGateway_0x56it9" targetRef="EndEvent_11dfcko" />
-    <bpmn:endEvent id="EndEvent_0g0tu5s" name="Aktion wurde manuell unterbrochen">
-      <bpmn:incoming>SequenceFlow_0w6pchb</bpmn:incoming>
-      <bpmn:escalationEventDefinition escalationRef="Escalation_17keigi" />
-    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_06b7drd" sourceRef="BoundaryEvent_0apkb7e" targetRef="ExclusiveGateway_0x56it9" />
     <bpmn:association id="Association_1lpzr2z" sourceRef="StartEvent_1" targetRef="TextAnnotation_1k0rt5j" />
     <bpmn:textAnnotation id="TextAnnotation_1k0rt5j">    <bpmn:text><![CDATA[Benötigte Eingangsinformationen:
 ----
@@ -88,7 +98,7 @@ Message_RollladenAktionManuellerAbbruch]]></bpmn:text>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_08b5vka">
       <bpmndi:BPMNShape id="Participant_1f1zlh4_di" bpmnElement="Participant_RollladenSteuern">
-        <dc:Bounds x="6" y="-1" width="961" height="385" />
+        <dc:Bounds x="15" y="-2" width="1086" height="386" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="65" y="71" width="36" height="36" />
@@ -108,9 +118,9 @@ Message_RollladenAktionManuellerAbbruch]]></bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1gljqu8_di" bpmnElement="SequenceFlow_1gljqu8">
         <di:waypoint xsi:type="dc:Point" x="484" y="89" />
-        <di:waypoint xsi:type="dc:Point" x="564" y="89" />
+        <di:waypoint xsi:type="dc:Point" x="553" y="89" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="479.4936856811996" y="64" width="90" height="20" />
+          <dc:Bounds x="473.92582943119965" y="64" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BoundaryEvent_0b1ao5q_di" bpmnElement="BoundaryEvent_056ufde">
@@ -122,36 +132,36 @@ Message_RollladenAktionManuellerAbbruch]]></bpmn:text>
       <bpmndi:BPMNEdge id="SequenceFlow_1r8qh7i_di" bpmnElement="SequenceFlow_1r8qh7i">
         <di:waypoint xsi:type="dc:Point" x="435" y="147" />
         <di:waypoint xsi:type="dc:Point" x="435" y="270" />
-        <di:waypoint xsi:type="dc:Point" x="589" y="270" />
+        <di:waypoint xsi:type="dc:Point" x="578" y="270" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="405" y="199" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_0xrrw3j_di" bpmnElement="EndEvent_11dfcko">
-        <dc:Bounds x="841" y="252" width="36" height="36" />
+        <dc:Bounds x="975" y="252" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="814" y="289" width="90" height="20" />
+          <dc:Bounds x="948" y="289" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_1xalzag_di" bpmnElement="ExclusiveGateway_1xalzag" isMarkerVisible="true">
-        <dc:Bounds x="731" y="64" width="50" height="50" />
+        <dc:Bounds x="865" y="64" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="711" y="114" width="90" height="20" />
+          <dc:Bounds x="845" y="114" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_08u4t4o_di" bpmnElement="SequenceFlow_08u4t4o">
-        <di:waypoint xsi:type="dc:Point" x="781" y="89" />
-        <di:waypoint xsi:type="dc:Point" x="841" y="89" />
+        <di:waypoint xsi:type="dc:Point" x="915" y="89" />
+        <di:waypoint xsi:type="dc:Point" x="975" y="89" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="766.3896103896104" y="64" width="90" height="20" />
+          <dc:Bounds x="900.3896103896104" y="64" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0w6pchb_di" bpmnElement="SequenceFlow_0w6pchb">
-        <di:waypoint xsi:type="dc:Point" x="756" y="114" />
-        <di:waypoint xsi:type="dc:Point" x="756" y="182" />
-        <di:waypoint xsi:type="dc:Point" x="841" y="182" />
+        <di:waypoint xsi:type="dc:Point" x="890" y="114" />
+        <di:waypoint xsi:type="dc:Point" x="890" y="182" />
+        <di:waypoint xsi:type="dc:Point" x="975" y="182" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="726" y="138" width="90" height="20" />
+          <dc:Bounds x="860" y="138" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_1k0rt5j_di" bpmnElement="TextAnnotation_1k0rt5j">
@@ -162,55 +172,75 @@ Message_RollladenAktionManuellerAbbruch]]></bpmn:text>
         <di:waypoint xsi:type="dc:Point" x="149" y="147" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ReceiveTask_174vyrs_di" bpmnElement="Task_0hpx0y7">
-        <dc:Bounds x="564" y="49" width="100" height="80" />
+        <dc:Bounds x="553" y="49" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1o2g4ui_di" bpmnElement="SequenceFlow_1o2g4ui">
-        <di:waypoint xsi:type="dc:Point" x="664" y="89" />
-        <di:waypoint xsi:type="dc:Point" x="731" y="89" />
+        <di:waypoint xsi:type="dc:Point" x="653" y="89" />
+        <di:waypoint xsi:type="dc:Point" x="721" y="89" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="652.5" y="64" width="90" height="20" />
+          <dc:Bounds x="642" y="64" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BoundaryEvent_1y86wmp_di" bpmnElement="BoundaryEvent_0apkb7e">
-        <dc:Bounds x="596" y="111" width="36" height="36" />
+        <dc:Bounds x="585" y="111" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="569" y="147" width="90" height="20" />
+          <dc:Bounds x="558" y="147" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ExclusiveGateway_0x56it9_di" bpmnElement="ExclusiveGateway_0x56it9" isMarkerVisible="true">
-        <dc:Bounds x="589" y="245" width="50" height="50" />
+        <dc:Bounds x="578" y="245" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="569" y="295" width="90" height="20" />
+          <dc:Bounds x="558" y="295" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_06b7drd_di" bpmnElement="SequenceFlow_06b7drd">
-        <di:waypoint xsi:type="dc:Point" x="614" y="147" />
-        <di:waypoint xsi:type="dc:Point" x="614" y="196" />
-        <di:waypoint xsi:type="dc:Point" x="614" y="196" />
-        <di:waypoint xsi:type="dc:Point" x="614" y="245" />
+        <di:waypoint xsi:type="dc:Point" x="603" y="147" />
+        <di:waypoint xsi:type="dc:Point" x="603" y="196" />
+        <di:waypoint xsi:type="dc:Point" x="603" y="196" />
+        <di:waypoint xsi:type="dc:Point" x="603" y="245" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="569.1515074225304" y="154.0765303014845" width="90" height="20" />
+          <dc:Bounds x="558.1515074225304" y="154.0765303014845" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_1dh96ym_di" bpmnElement="EndEvent_1ovshds">
-        <dc:Bounds x="841" y="71" width="36" height="36" />
+        <dc:Bounds x="975" y="71" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="814" y="107" width="90" height="20" />
+          <dc:Bounds x="948" y="108" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0uwlw7u_di" bpmnElement="SequenceFlow_0uwlw7u">
-        <di:waypoint xsi:type="dc:Point" x="639" y="270" />
-        <di:waypoint xsi:type="dc:Point" x="841" y="270" />
+      <bpmndi:BPMNShape id="EndEvent_185jyti_di" bpmnElement="EndEvent_0g0tu5s">
+        <dc:Bounds x="975" y="164" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="695.0742556030131" y="245.00031498864217" width="90" height="20" />
+          <dc:Bounds x="948" y="202" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1w0x1v5_di" bpmnElement="SequenceFlow_1w0x1v5">
+        <di:waypoint xsi:type="dc:Point" x="821" y="89" />
+        <di:waypoint xsi:type="dc:Point" x="865" y="89" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="798" y="64" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_185jyti_di" bpmnElement="EndEvent_0g0tu5s">
-        <dc:Bounds x="841" y="164" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="814" y="200" width="90" height="20" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="ServiceTask_0bd6ycx_di" bpmnElement="Task_0xowppa">
+        <dc:Bounds x="721" y="49" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1xd9qkc_di" bpmnElement="ServiceTask_1xd9qkc">
+        <dc:Bounds x="721" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_19yft2v_di" bpmnElement="SequenceFlow_19yft2v">
+        <di:waypoint xsi:type="dc:Point" x="628" y="270" />
+        <di:waypoint xsi:type="dc:Point" x="721" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="629.5" y="245" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1547nfn_di" bpmnElement="SequenceFlow_1547nfn">
+        <di:waypoint xsi:type="dc:Point" x="821" y="270" />
+        <di:waypoint xsi:type="dc:Point" x="975" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="852.9026015117029" y="245.00018311812207" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
