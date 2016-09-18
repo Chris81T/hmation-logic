@@ -4,7 +4,7 @@
     <bpmn:participant id="Participant_RollladenSteuern" name="Rollladen steuern" processRef="Process_RollladenSteuern" />
   </bpmn:collaboration>
   <bpmn:process id="Process_RollladenSteuern" name="Rollladen steuern" isExecutable="true">
-    <bpmn:endEvent id="EndEvent_11dfcko" name="Das Ansprechen des Aktors scheiterte">
+    <bpmn:endEvent id="EndEvent_11dfcko" name="Das Ansprechen des Aktors ist gescheitert">
       <bpmn:incoming>SequenceFlow_0uwlw7u</bpmn:incoming>
       <bpmn:errorEventDefinition errorRef="Error_04atzv8" />
     </bpmn:endEvent>
@@ -38,7 +38,7 @@
     <bpmn:endEvent id="EndEvent_1ovshds" name="Rollladen erfolgreich gesteuert">
       <bpmn:incoming>SequenceFlow_08u4t4o</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Task_17wa6yu" name="Rollladenaktor ansprechen" camunda:asyncAfter="true" camunda:class="de.chrthms.hmation.logic.devices.shutter.ShutterActorController">
+    <bpmn:serviceTask id="Task_17wa6yu" name="Rollladenaktor ansprechen" camunda:asyncAfter="true" camunda:class="de.chrthms.hmation.logic.devices.shutter.ShutterActorDelegate">
       <bpmn:incoming>SequenceFlow_1a4mmjh</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1gljqu8</bpmn:outgoing>
     </bpmn:serviceTask>

@@ -9,7 +9,7 @@
       <bpmn:outgoing>SequenceFlow_1ncn7zf</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1ncn7zf" sourceRef="StartEvent_1" targetRef="Task_1xg4yfj" />
-    <bpmn:serviceTask id="Task_1xg4yfj" name="Verbindung zur CCU aufnehmen" camunda:class="de.chrthms.hmation.logic.devices.delegates.EventRegisterToCCUDelegate">
+    <bpmn:serviceTask id="Task_1xg4yfj" name="Verbindung zur CCU aufnehmen" camunda:class="de.chrthms.hmation.logic.devices.commons.EventRegisterToCCUDelegate">
       <bpmn:incoming>SequenceFlow_1ncn7zf</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1f8iitd</bpmn:outgoing>
     </bpmn:serviceTask>

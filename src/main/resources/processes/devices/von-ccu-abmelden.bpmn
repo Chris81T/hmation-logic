@@ -10,7 +10,7 @@
     <bpmn:endEvent id="EndEvent_0ljytzc">
       <bpmn:incoming>SequenceFlow_1ria4bj</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Task_1hfjoh3" name="Verbindung zur CCU trennen" camunda:class="de.chrthms.hmation.logic.devices.delegates.EventLeaveFromCCUDelegate">
+    <bpmn:serviceTask id="Task_1hfjoh3" name="Verbindung zur CCU trennen" camunda:class="de.chrthms.hmation.logic.devices.commons.EventLeaveFromCCUDelegate">
       <bpmn:incoming>SequenceFlow_1kcsb1w</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1ria4bj</bpmn:outgoing>
     </bpmn:serviceTask>
