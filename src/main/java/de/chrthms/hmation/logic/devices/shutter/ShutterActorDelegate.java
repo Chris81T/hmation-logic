@@ -24,7 +24,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static de.chrthms.hmation.logic.devices.ProcessFinals.*;
+import static de.chrthms.hmation.logic.ProcessFinals.*;
 import java.util.Optional;
 import org.camunda.bpm.BpmPlatform;
 

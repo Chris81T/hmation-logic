@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.chrthms.hmation.logic.devices;
+package de.chrthms.hmation.logic;
 
 /**
  *
