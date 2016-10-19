@@ -34,7 +34,7 @@ public class ShutterActorMessageInterpreter implements JavaDelegate {
 
         LOG.info("About to interprete given message");
         
-        // TODO
+        // TODO falls gar nicht auf eine Message gewartet wurde, muss hier nichts passieren! Lediglich unten das "leave"
         
         LOG.info("Finally leave the observer delegate");
         LeaveObserverDelegate leaveObserverDelegate = new LeaveObserverDelegate();

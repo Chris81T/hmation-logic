@@ -17,7 +17,7 @@
 package de.chrthms.hmation.logic.devices.shutter;
 
 import de.chrthms.hmatic4j.HMaticAPI;
-import de.chrthms.hmation.logic.ProcessFinals;
+import de.chrthms.hmation.logic.ProcessConstants;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class LeaveObserverDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         
-        final String registryId = (String) execution.getVariable(ProcessFinals.VAR_HM_EVENT_REGISTRY_ID);
+        final String registryId = (String) execution.getVariable(ProcessConstants.VAR_HM_EVENT_REGISTRY_ID);
         
         LOG.info("About to unobserve with registryId = {}", registryId);
         

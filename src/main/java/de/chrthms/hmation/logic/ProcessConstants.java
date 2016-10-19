@@ -20,11 +20,12 @@ package de.chrthms.hmation.logic;
  *
  * @author christian
  */
-public abstract class ProcessFinals {
+public abstract class ProcessConstants {
 
     public static String VAR_DEVICE_ADDRESS = "deviceAddress";
     public static String VAR_DEVICE_CHANNEL = "deviceChannel";
-    public static String VAR_CONTROL_VALUE = "controlValue";
+    public static String VAR_LEVEL = "level";
+    public static String VAR_FEEDBACK_REQUESTED = "feedbackRequested";
     public static String VAR_HM_RPC_SERVER_ADDRESS = "homematicRpcServerAddress";
     public static String VAR_HM_EVENT_REGISTRY_ID = "homematicEventRegistryId";
     

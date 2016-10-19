@@ -126,7 +126,7 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.2.Final</version>
                 <configuration>
-                    <hostname>raspberrypi</hostname>
+                    <hostname>jarvis</hostname>
                     <port>9990</port>
                     <username>wildfly</username>
                     <password>wildfly1</password>                    

@@ -24,7 +24,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static de.chrthms.hmation.logic.ProcessFinals.*;
+import static de.chrthms.hmation.logic.ProcessConstants.*;
 import java.util.Optional;
 import org.camunda.bpm.BpmPlatform;
 
@@ -44,47 +44,53 @@ public class ShutterActorDelegate implements JavaDelegate {
         final String hmRpcAddress = (String) execution.getVariable(VAR_HM_RPC_SERVER_ADDRESS);
         final String deviceAddress = (String) execution.getVariable(VAR_DEVICE_ADDRESS);
         final String deviceChannel = (String) execution.getVariable(VAR_DEVICE_CHANNEL);
-        final Double controlValue = Double.valueOf( (String) execution.getVariable(VAR_CONTROL_VALUE) ); // TODO IN FIRST TEST A STRING IS GIVEN!!!
-                        
-        LOG.info("About to controll shutter-actor with following values: hmRpcAddress = {}, devicesAddress = {}, deviceChannel = {}, "
-                + "controllValue = {}.",
-                new Object[]{hmRpcAddress, deviceAddress, deviceChannel, controlValue});
-                
-        LOG.info("About to observe the homematic shutter-actor for upcoming execution.");
-        
-        Optional<String> eventRegistryId = HMaticAPI.getInstance()
-                .observe()
-                .deviceAddress(deviceAddress)
-                .deviceChannel(deviceChannel)
-                .valueKey(ValueKey.WORKING)
-                .start((event) -> {
-                    LOG.info("Received expected Homematic Event = {}.", event);
-                    
-                    if ((Boolean) event.getValue() == false) {
-                        LOG.info("The WORKING flag is set to false. About to send message back to process.");
-                        
-                        BpmPlatform.getDefaultProcessEngine()
-                                .getRuntimeService()
-                                .createMessageCorrelation(MSG_SHUTTER_INCOMING_EVENT)
-                                .processInstanceId(processInstanceId)
-                                .correlate();
-                        
-                    } else {
-                        LOG.info("The WORKING flag is set to true. Actually nothing to do. False is expeded.");                        
-                    }
-                    
-                });
+        final Double level = (Double) execution.getVariable(VAR_LEVEL);
 
-        LOG.info("Hold given eventRegistryId = {} as process variable.", eventRegistryId);
-        execution.setVariable(VAR_HM_EVENT_REGISTRY_ID, eventRegistryId.orElse(null));
-        
+        final Boolean feedbackRequested = (Boolean) execution.getVariable(VAR_FEEDBACK_REQUESTED);
+
+        LOG.info("About to controll shutter-actor with following values: hmRpcAddress = {}, devicesAddress = {}, deviceChannel = {}, "
+                + "level = {}, feedbackRequested = {}.",
+                new Object[]{hmRpcAddress, deviceAddress, deviceChannel, level, feedbackRequested});
+
+        if (feedbackRequested) {
+
+            LOG.info("About to observe the homematic shutter-actor for upcoming execution.");
+
+            Optional<String> eventRegistryId = HMaticAPI.getInstance()
+                    .observe()
+                    .deviceAddress(deviceAddress)
+                    .deviceChannel(deviceChannel)
+                    .valueKey(ValueKey.WORKING)
+                    .start((event) -> {
+                        LOG.info("Received expected Homematic Event = {}.", event);
+
+                        if ((Boolean) event.getValue() == false) {
+                            LOG.info("The WORKING flag is set to false. About to send message back to process.");
+
+                            BpmPlatform.getDefaultProcessEngine()
+                                    .getRuntimeService()
+                                    .createMessageCorrelation(MSG_SHUTTER_INCOMING_EVENT)
+                                    .processInstanceId(processInstanceId)
+                                    .correlate();
+
+                        } else {
+                            LOG.info("The WORKING flag is set to true. Actually nothing to do. False is expeded.");
+                        }
+
+                    });
+
+            LOG.info("Hold given eventRegistryId = {} as process variable.", eventRegistryId);
+            execution.setVariable(VAR_HM_EVENT_REGISTRY_ID, eventRegistryId.orElse(null));
+
+        }
+
         LOG.info("Now it is time to perform the execution to control the shutter-actor.");
         
         HMaticAPI.getInstance()
                 .rpcServerAddress(hmRpcAddress)
                 .wireless()
                 .command(new SetValueLevel()
-                    .value(controlValue)
+                    .value(level)
                     .deviceAddress(deviceAddress)
                     .deviceChannel(deviceChannel))
                 .execute();
